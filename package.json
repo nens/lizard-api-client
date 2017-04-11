@@ -3,10 +3,31 @@
   "version": "0.1.0",
   "description": "Library to get data from the Lizard API",
   "main": "lib/LizardApiClient.js",
-  "scripts": {},
+  "scripts": {
+    "start": "webpack"
+  },
   "devDependencies": [
+    "babel",
+    "babel-cli",
+    "babel-core",
+    "babel-eslint",
+    "babel-loader",
+    "babel-plugin-add-module-exports",
+    "babel-polyfill",
+    "babel-preset-es2015",
+    "babel-preset-stage-0",
+    "buck-trap",
+    "chai",
+    "concurrently",
+    "eslint",
+    "eslint-loader",
+    "mocha",
+    "nock",
+    "redux",
+    "redux-mock-store",
     "webpack",
-    "webpack-dev-server"
+    "webpack-dev-server",
+    "yargs"
   ],
   "dependencies": [
     "immutable"

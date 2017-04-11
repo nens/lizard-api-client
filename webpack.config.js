@@ -21,7 +21,11 @@ var config = {
       '/admin': 'http://127.0.0.1:8000/',
       '/static': 'http://127.0.0.1:8000/',
     }
-  }
+  },
+  module: {
+    loaders: []
+  },
+
 };
 
 module.exports = config;
