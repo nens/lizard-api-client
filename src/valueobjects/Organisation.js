@@ -7,5 +7,5 @@ const OrganisationRecord = new Record({
   'users_url': null
 }, 'Organisation');
 
-export class Organisation extends OrganisationRecord {
+export default class Organisation extends OrganisationRecord {
 }

@@ -1,1 +1,1 @@
-export { getRasters, getRasterDetail } from './rasterstore';
+export { getRasters, getRasterDetail } from './endpoints/rasters';

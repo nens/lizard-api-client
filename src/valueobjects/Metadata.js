@@ -6,5 +6,5 @@ const MetadataRecord = new Record({
   'retrieved': null
 }, 'Metadata');
 
-export class Metadata extends MetadataRecord {
+export default class Metadata extends MetadataRecord {
 }

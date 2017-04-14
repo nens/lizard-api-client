@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import { Metadata } from './metadata';
+import Metadata from './valueobjects/Metadata';
 
 const baseUrl = (() => {
   let absoluteBase = 'http://demo.lizard.net';
