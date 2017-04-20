@@ -14,12 +14,12 @@ const baseUrl = (() => {
   return absoluteBase;
 })();
 
-export function request(endpoint, filters = {}) {
-  let totalFilters = Object.assign({'format': 'json'}, filters);
+export function request(endpoint, params = {}) {
+  let totalParams = Object.assign({'format': 'json'}, params);
   let url = baseUrl + (endpoint[0] === '/' ? '' : '/') + endpoint;
 
-  let query = Object.keys(totalFilters).map(
-    k => encodeURIComponent(k) + '=' + encodeURIComponent(totalFilters[k])
+  let query = Object.keys(totalParams).map(
+    k => encodeURIComponent(k) + '=' + encodeURIComponent(totalParams[k])
   ).join('&');
 
   if (query) {
