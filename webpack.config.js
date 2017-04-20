@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var libraryName = 'LizardApiClient';
 
 var config = {
-  entry: [__dirname + '/src/index.js'],
+  entry: [__dirname + '/src/lizard-api-client.js'],
   devtool: 'source-map',
   output: {
     path: __dirname + '/lib',
@@ -23,9 +23,14 @@ var config = {
     }
   },
   module: {
-    loaders: []
+    loaders: [
+      {
+        test: /(\.jsx|\.js)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      }
+    ]
   },
-
 };
 
 module.exports = config;

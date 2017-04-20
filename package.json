@@ -4,7 +4,8 @@
   "description": "Library to get data from the Lizard API",
   "main": "lib/LizardApiClient.js",
   "scripts": {
-    "start": "webpack"
+    "start": "webpack",
+    "test": "mocha --require babel-polyfill --compilers js:babel-core/register ./test/*.spec.js"
   },
   "devDependencies": { 
     "babel": "",
