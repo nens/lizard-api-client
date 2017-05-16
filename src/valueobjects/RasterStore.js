@@ -1,10 +1,9 @@
 import { request } from '../http';
-import { Record } from 'immutable';
+import { definitionToRecord } from '../definitions';
 
-// Definition of the fields that a RasterStore from the list view has. Not exported.
-const RasterStoreRecord = Record({
-  // Metadata
-  'metadata': null,
+// Definition of the fields that a RasterStore from the list view has.
+export const RasterStoreDefinition = {
+  'metadata': 'Metadata',
 
   // Fields from the API
   'url': null,
@@ -12,7 +11,7 @@ const RasterStoreRecord = Record({
 
   'name': null,
   'description': null,
-  'organisation': null,
+  'organisation': 'Organisation',
   'access_modifier': null,
   'origin': null,
   'interval': null,
@@ -21,10 +20,12 @@ const RasterStoreRecord = Record({
   'supplier': null,
   'supplier_code': null,
   'last_modified': null
-}, 'RasterStore');
+};
+
+const RasterStoreRecord = definitionToRecord('RasterStore', RasterStoreDefinition);
 
 // Subclass that defines helper methods.
-export default class RasterStore extends RasterStoreRecord {
+export class RasterStore extends RasterStoreRecord {
   getData(filters = {}) {
     return request('/rasters/' + this.uuid + '/data/', filters);
   }
