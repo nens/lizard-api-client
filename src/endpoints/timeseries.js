@@ -1,5 +1,5 @@
-import { request } from '../http';
-import Timeseries from '../valueobjects/Timeseries';
+import { endpoint, request } from '../http';
+import { processMultipleResultsResponse } from '../tools';
 
 const getStartDefault = () => {
   // For now, return constant value. Later this default should be
@@ -31,9 +31,10 @@ export function getTimeseries(
   };
 
   console.log('[*] TS request started...');
-  return request('/timeseries/', params).then((result) => {
+  let url = endpoint('/timeseries/', params);
+
+  return request(url).then((result) => {
     console.log('[*] TS request finished! result =', result);
-    result.set('parcel_id', parcelId);
-    return new Timeseries(result);
+    return processMultipleResultsResponse('Timeseries', result, url);
   });
 }

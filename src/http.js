@@ -36,40 +36,7 @@ export function request(url) {
       if (this.status >= 200 && this.status < 300) {
         let json = JSON.parse(this.response);
 
-        // <<<<<<< HEAD
-        //         console.log('received & parsed JSON looks like:', json);
-
-        //         if (json && json['results']) {
-        //           // Add metadata to items in results, return the array.
-        //           result = json.results.map(function (result, idx) {
-        //             result.metadata = new Metadata({
-        //               'sourceUrl': url,
-        //               'index': idx,
-        //               'retrieved': Date.now()
-        //             });
-        //             return result;
-        //           });
-        //         } else {
-        //           // Return the parsed JSON as-is.
-        //           result = json;
-
-        //           if (typeof result === 'object') {
-        //             result.metadata = new Metadata({
-        //               'sourceUrl': url,
-        //               'index': null,
-        //               'retrieved': Date.now()
-        //             });
-        //           }
-        //         }
-        //         console.log('*** result =', result);
-        //         const wasJS = fromJS(result);
-
-        //         console.log('*** wasJS =', wasJS);
-        //         resolve(fromJS(result));  // Turn into Immutable object
-        // =======
-
         resolve(json);
-
       } else {
         reject(`Status ${this.status}, '${this.statusText}' for URL ${url}.`);
       }

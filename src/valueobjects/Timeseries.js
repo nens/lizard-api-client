@@ -1,8 +1,8 @@
-import { Record } from 'immutable';
+import { definitionToRecord } from '../definitions';
 
-const TimeseriesRecord = Record({
+export const TimeseriesDefinition = {
   // Metadata, filled in by http.js
-  'metadata': null,
+  'metadata': 'Metadata',
 
   // Fields from the API
   'uuid': null,
@@ -11,7 +11,10 @@ const TimeseriesRecord = Record({
   'start': null,
   'end': null,
   'events': null
-});
+};
 
-export default class Timeseries extends TimeseriesRecord {
+const TimeseriesRecord = definitionToRecord(
+  'Timeseries', TimeseriesDefinition);
+
+export class Timeseries extends TimeseriesRecord {
 }
