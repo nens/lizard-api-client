@@ -1,8 +1,7 @@
-import { Record } from 'immutable';
+import { definitionToRecord } from '../definitions';
 
-const SearchResultRecord = Record({
-  // Metadata, filled in by http.js
-  'metadata': null,
+export const SearchResultDefinition = {
+  'metadata': 'Metadata',
 
   // Fields from the API
   'id': null,
@@ -13,7 +12,9 @@ const SearchResultRecord = Record({
   'entity_id': null,
   'entity_url': null,
   'view': null
-});
+};
+
+const SearchResultRecord = definitionToRecord('SearchResult', SearchResultDefinition);
 
 export default class SearchResult extends SearchResultRecord {
 }
