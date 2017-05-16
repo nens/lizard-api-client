@@ -38,6 +38,8 @@ export function request(endpoint, params = {}) {
       if (this.status >= 200 && this.status < 300) {
         let json = JSON.parse(this.response);
 
+        console.log('received & parsed JSON looks like:', json);
+
         if (json && json['results']) {
           // Add metadata to items in results, return the array.
           result = json.results.map(function (result, idx) {
@@ -60,7 +62,10 @@ export function request(endpoint, params = {}) {
             });
           }
         }
+        console.log('*** result =', result);
+        const wasJS = fromJS(result);
 
+        console.log('*** wasJS =', wasJS);
         resolve(fromJS(result));  // Turn into Immutable object
       } else {
         reject(`Status ${this.status}, '${this.statusText}' for URL ${url}.`);
