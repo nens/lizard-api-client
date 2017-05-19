@@ -1,11 +1,13 @@
-import { Record } from 'immutable';
+import { definitionToRecord } from '../definitions';
 
-const OrganisationRecord = new Record({
-  'metadata': null,
+export const OrganisationDefinition = {
+  'metadata': 'Metadata',
   'url': null,
   'unique_id': null,
   'users_url': null
-}, 'Organisation');
+};
 
-export default class Organisation extends OrganisationRecord {
+const OrganisationRecord = definitionToRecord('Organisation', OrganisationDefinition);
+
+export class Organisation extends OrganisationRecord {
 }

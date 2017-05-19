@@ -1,6 +1,3 @@
-import { fromJS } from 'immutable';
-import Metadata from './valueobjects/Metadata';
-
 const baseUrl = (() => {
   let absoluteBase = 'http://demo.lizard.net';
 
@@ -14,9 +11,9 @@ const baseUrl = (() => {
   return absoluteBase;
 })();
 
-export function request(endpoint, params = {}) {
+export function endpoint(urlFragment, params = {}) {
   let totalParams = Object.assign({'format': 'json'}, params);
-  let url = baseUrl + (endpoint[0] === '/' ? '' : '/') + endpoint;
+  let url = baseUrl + (urlFragment[0] === '/' ? '' : '/') + urlFragment;
 
   let query = Object.keys(totalParams).map(
     k => encodeURIComponent(k) + '=' + encodeURIComponent(totalParams[k])
@@ -26,11 +23,12 @@ export function request(endpoint, params = {}) {
     url = url + '?' + query;
   }
 
+  return url;
+}
+
+export function request(url) {
   return new Promise(function (resolve, reject) {
     let request = new XMLHttpRequest();
-    let result;
-
-    console.log('We get here (1), url is ' + url);
 
     request.onreadystatechange = function () {
       if (this.readyState !== 4) return;
@@ -38,30 +36,7 @@ export function request(endpoint, params = {}) {
       if (this.status >= 200 && this.status < 300) {
         let json = JSON.parse(this.response);
 
-        if (json && json['results']) {
-          // Add metadata to items in results, return the array.
-          result = json.results.map(function (result, idx) {
-            result.metadata = new Metadata({
-              'sourceUrl': url,
-              'index': idx,
-              'retrieved': Date.now()
-            });
-            return result;
-          });
-        } else {
-          // Return the parsed JSON as-is.
-          result = json;
-
-          if (typeof result === 'object') {
-            result.metadata = new Metadata({
-              'sourceUrl': url,
-              'index': null,
-              'retrieved': Date.now()
-            });
-          }
-        }
-
-        resolve(fromJS(result));  // Turn into Immutable object
+        resolve(json);
       } else {
         reject(`Status ${this.status}, '${this.statusText}' for URL ${url}.`);
       }

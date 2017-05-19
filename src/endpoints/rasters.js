@@ -1,25 +1,19 @@
-import { request } from '../http';
-import RasterStore from '../valueobjects/RasterStore';
-import RasterStoreDetail from '../valueobjects/RasterStoreDetail';
-import Organisation from '../valueobjects/Organisation';
+import { endpoint, request } from '../http';
+import { processSingleResultResponse, processMultipleResultsResponse } from '../tools';
 
 // Retrieve rasters from the API rasterstore list page.
 export function getRasters(filters = {}) {
-  return request('/rasters/', filters).then(function (results) {
-    return results.map(function (result) {
-      if (result.organisation) {
-        result = result.set('organisation', new Organisation(result.organisation));
-      }
-      return new RasterStore(result);
-    });
+  let url = endpoint('/rasters/', filters);
+
+  return request(url).then(function (results) {
+    return processMultipleResultsResponse('RasterStore', results, url);
   });
 }
 
 export function getRasterDetail(uuid) {
-  return request('/rasters/' + uuid + '/').then(function (data) {
-    if (data.organisation) {
-      data = data.set('organisation', new Organisation(data.organisation));
-    }
-    return new RasterStoreDetail(data);
+  let url = endpoint('/rasters/' + uuid + '/');
+
+  return request(url).then(function (data) {
+    return processSingleResultResponse('RasterStoreDetail', data, url);
   });
 }
