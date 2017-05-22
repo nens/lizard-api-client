@@ -1,10 +1,12 @@
 import { endpoint, request } from '../http';
 import { processMultipleResultsResponse } from '../tools';
 
-const getStartDefault = () => {
+const ONE_WEEK_MS = 604800000;
+
+const getStartDefault = (end) => {
   // For now, return constant value. Later this default should be
   // "<defaultEnd> minus <constant>", e.g. 'now' minus one week
-  return 1420074000000;
+  return end - ONE_WEEK_MS;
 };
 
 const getEndDefault = () => {
@@ -21,8 +23,8 @@ const getUUIDforParcel = (parcelId) => {
 // Retrieve timeseries from the timeseries API
 export function getTimeseries(
   parcelId = 321,
-  start = getStartDefault(),
-  end = getEndDefault()) {
+  end = getEndDefault(),
+  start = getStartDefault(end)) {
 
   const params = {
     uuid: getUUIDforParcel(parcelId),
