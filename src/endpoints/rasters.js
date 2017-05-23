@@ -5,8 +5,6 @@ import { processSingleResultResponse, processMultipleResultsResponse } from '../
 export function getRasters(filters = {}) {
   let url = endpoint('/rasters/', filters);
 
-  console.log('URL: ', url);
-
   return request(url).then(function (results) {
     return processMultipleResultsResponse('RasterStore', results, url);
   });
