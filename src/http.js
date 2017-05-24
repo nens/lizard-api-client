@@ -1,5 +1,5 @@
 const baseUrl = (() => {
-  let absoluteBase = 'http://demo.lizard.net';
+  let absoluteBase = 'http://demo.lizard.net/api/v3';
 
   if (typeof window !== 'undefined') {
     const protocol = window && window.location.protocol;
