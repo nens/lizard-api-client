@@ -4,7 +4,6 @@ import { valueObjects, valueObjectDefinitions } from './valueobjects/index';
 const processingFunctions = {};
 
 export function processSingleResultResponse(objectType, result, url) {
-  console.log('objectType: ', objectType);
   const ValueObject = valueObjects[objectType];
   const definition = valueObjectDefinitions[objectType];
 
@@ -62,10 +61,8 @@ export function processFeatureCollection(objectType, json, url) {
     return [];
   }
 
-  console.log('Processing ', json);
   return json.results.features.map(function (feature, idx) {
-    var item;
-    var result = feature.properties;
+    const result = feature.properties;
 
     result.metadata = new Metadata({
       'sourceUrl': url,
@@ -75,8 +72,6 @@ export function processFeatureCollection(objectType, json, url) {
 
     result.geometry = feature.geometry;
 
-    item = processSingleResultResponse(objectType, result);
-    console.log(item);
-    return item;
+    return processSingleResultResponse(objectType, result);
   });
 }
