@@ -5,10 +5,12 @@ export const ParcelDefinition = {
   'metadata': 'Metadata',
 
   // Fields from the API
+  'organisation': 'Organisation',
+  'code': null,
   'name': null,
   'external_id': null,
   'geometry': null,
-  'pk': null
+  'id': null
 };
 
 const ParcelRecord = definitionToRecord('Parcel', ParcelDefinition);
