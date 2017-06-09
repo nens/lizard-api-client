@@ -71,6 +71,7 @@ export function processFeatureCollection(objectType, json, url) {
     });
 
     result.geometry = feature.geometry;
+    result.id = feature.id;
 
     return processSingleResultResponse(objectType, result);
   });
