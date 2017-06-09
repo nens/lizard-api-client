@@ -4,12 +4,8 @@ import { valueObjects, valueObjectDefinitions } from './valueobjects/index';
 const processingFunctions = {};
 
 export function processSingleResultResponse(objectType, result, url) {
-  console.log('objectType: ', objectType);
   const ValueObject = valueObjects[objectType];
   const definition = valueObjectDefinitions[objectType];
-
-  console.log('ValueObject: ', ValueObject);
-  console.log('definition: ', definition);
 
   const processedResult = {};
 
@@ -45,16 +41,36 @@ export function processSingleResultResponse(objectType, result, url) {
 }
 
 export function processMultipleResultsResponse(objectType, json, url) {
-  if (!json || !json['results']) {
+  if (!json || !json.results) {
     return [];
   }
 
-  return json['results'].map(function (result, idx) {
+  return json.results.map(function (result, idx) {
     result.metadata = new Metadata({
       'sourceUrl': url,
       'index': idx,
       'retrieved': Date.now()
     });
+
+    return processSingleResultResponse(objectType, result);
+  });
+}
+
+export function processFeatureCollection(objectType, json, url) {
+  if (!json || !json.results || json.results.type !== 'FeatureCollection') {
+    return [];
+  }
+
+  return json.results.features.map(function (feature, idx) {
+    const result = feature.properties;
+
+    result.metadata = new Metadata({
+      'sourceUrl': url,
+      'index': idx,
+      'retrieved': Date.now()
+    });
+
+    result.geometry = feature.geometry;
 
     return processSingleResultResponse(objectType, result);
   });
