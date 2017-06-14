@@ -1,9 +1,9 @@
-import { Record } from 'immutable';
+import { definitionToRecord } from '../definitions';
 
 // Fields from the detail page, more than from the list page
-const RasterStoreDetailRecord = Record({
+export const RasterStoreDetailDefinition = {
   // Metadata
-  'metadata': null,
+  'metadata': 'Metadata',
 
   // Fields from the API
   'url': null,
@@ -21,9 +21,12 @@ const RasterStoreDetailRecord = Record({
   'supplier_code': null,
   'last_modified': null,
 
-  'wms_info': null,
+  'wms_info': 'WmsInfo',
   'options': null
-}, 'RasterStoreDetailRecord');
+};
 
-export default class RasterStoreDetail extends RasterStoreDetailRecord {
+const RasterStoreDetailRecord = definitionToRecord(
+  'RasterStoreDetail', RasterStoreDetailDefinition);
+
+export class RasterStoreDetail extends RasterStoreDetailRecord {
 }
