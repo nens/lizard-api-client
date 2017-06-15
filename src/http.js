@@ -42,6 +42,7 @@ export function request(url) {
       }
     };
 
+    request.withCredentials = true; // Send cookie.
     request.open('GET', url);
     request.send();
   });

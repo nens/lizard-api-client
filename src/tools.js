@@ -28,7 +28,7 @@ export function processSingleResultResponse(objectType, result, url) {
           'retrieved': Date.now()
         });
       }
-    } else if (processingFunctions.hasOwnProperty(result[item])) {
+    } else if (processingFunctions.hasOwnProperty(definition[item])) {
       // Name of a function, e.g. to process timestamps.
       processedResult[item] = processingFunctions[definition[item]](result[item]);
     } else {
@@ -76,3 +76,23 @@ export function processFeatureCollection(objectType, json, url) {
     return processSingleResultResponse(objectType, result);
   });
 }
+
+export function flatten(ob) {
+  const toReturn = {};
+
+  for (let i in ob) {
+    if (!ob.hasOwnProperty(i)) continue;
+
+    if ((typeof ob[i]) === 'object') {
+      const flatObject = flatten(ob[i]);
+
+      for (let x in flatObject) {
+        if (!flatObject.hasOwnProperty(x)) continue;
+        toReturn[x] = flatObject[x];
+      }
+    } else {
+      toReturn[i] = ob[i];
+    }
+  }
+  return toReturn;
+};
