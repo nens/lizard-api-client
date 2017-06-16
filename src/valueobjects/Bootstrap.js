@@ -1,4 +1,5 @@
 import { definitionToRecord } from '../definitions';
+import { addGetParameter } from '../urls';
 
 export const BootstrapDefinition = {
   'metadata': 'Metadata',
@@ -12,12 +13,13 @@ export const BootstrapDefinition = {
 const BootstrapRecord = definitionToRecord('Bootstrap', BootstrapDefinition);
 
 export class Bootstrap extends BootstrapRecord {
-  // Todo: these should support an optional 'next' parameter.
   doLogout() {
-    window.location = this.logout;
+    window.location = addGetParameter(
+      this.logout, 'next', window.location.href);
   }
 
   doLogin() {
-    window.location = this.login;
+    window.location = addGetParameter(
+      this.login, 'next', window.location.href);
   }
 }
