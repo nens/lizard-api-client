@@ -1,24 +1,27 @@
+import { Bootstrap, BootstrapDefinition } from './Bootstrap';
 import { Organisation, OrganisationDefinition } from './Organisation';
+import { Parcel, ParcelDefinition } from './Parcel';
 import { RasterStore, RasterStoreDefinition } from './RasterStore';
 import { RasterStoreDetail, RasterStoreDetailDefinition } from './RasterStoreDetail';
-import { WmsInfo, WmsInfoDefinition } from './WmsInfo';
 import { Timeseries, TimeseriesDefinition } from './Timeseries';
-import { Parcel, ParcelDefinition } from './Parcel';
+import { WmsInfo, WmsInfoDefinition } from './WmsInfo';
 
 export const valueObjects = {
-  'Organisation': Organisation,
-  'Parcel': Parcel,
-  'RasterStore': RasterStore,
-  'RasterStoreDetail': RasterStoreDetail,
-  'WmsInfo': WmsInfo,
-  'Timeseries': Timeseries
+  Bootstrap: Bootstrap,
+  Organisation: Organisation,
+  Parcel: Parcel,
+  RasterStore: RasterStore,
+  RasterStoreDetail: RasterStoreDetail,
+  Timeseries: Timeseries,
+  WmsInfo: WmsInfo
 };
 
 export const valueObjectDefinitions = {
-  'Organisation': OrganisationDefinition,
-  'Parcel': ParcelDefinition,
-  'RasterStore': RasterStoreDefinition,
-  'RasterStoreDetail': RasterStoreDetailDefinition,
-  'WmsInfo': WmsInfoDefinition,
-  'Timeseries': TimeseriesDefinition
+  Bootstrap: BootstrapDefinition,
+  Organisation: OrganisationDefinition,
+  Parcel: ParcelDefinition,
+  RasterStore: RasterStoreDefinition,
+  RasterStoreDetail: RasterStoreDetailDefinition,
+  Timeseries: TimeseriesDefinition,
+  WmsInfo: WmsInfoDefinition
 };
