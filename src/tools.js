@@ -32,8 +32,18 @@ export function processSingleResultResponse(objectType, result, url) {
         });
       }
     } else if (definition[item] === 'Organisation') {
+      let orgData;
+      if (result.hasOwnProperty(item)) {
+        // Use organisation data from 'result':
+        orgData = result[item];
+      } else if (result.properties && result.properties.hasOwnProperty(item)) {
+        // Use organisation data from 'result.properties':
+        orgData = result.properties[item];
+      } else {
+        console.error("Expected to find organisation in result:", result);
+      }
       processedResult[item] = processSingleResultResponse(
-        'Organisation', result.properties[item]);
+        'Organisation', orgData);
     } else if (processingFunctions.hasOwnProperty(definition[item])) {
       // Name of a function, e.g. to process timestamps.
       processedResult[item] = processingFunctions[definition[item]](result[item]);
