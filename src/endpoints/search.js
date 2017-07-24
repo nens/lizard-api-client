@@ -34,7 +34,12 @@ function processSingleParcelResponse(result, url) {
     code: props.code,
     name: props.name,
     external_id: props.external_id,
-    organisation: props.organisation,
+    organisation: new Organisation({
+      name: props.organisation.name,
+      unique_id: props.organisation.unique_id,
+      url: props.organisation.url,
+      users_url: props.organisation.users_url
+    }),
     metadata: new Metadata({
       sourceUrl: url,
       index: null,
