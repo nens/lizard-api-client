@@ -2,49 +2,51 @@ import { endpoint, request } from '../http';
 import Metadata from '../valueobjects/Metadata';
 import Organisation from '../valueobjects/Organisation';
 import { valueObjects } from '../valueobjects/index';
+import SearchResult from "../valueobjects/SearchResult"
 
 import { processSingleResultResponse } from "../tools";
 
 const DEFAULT_SRID = 4326;
 
-export function search(q, types = null, exclude = []) {
+export function search(q, type = null, exclude = [], extraParams = {}) {
   let params = {
     'q': q
   };
 
-  if (types && types.length) {
-    params.types = types.join();
+  if (type) {
+    params.type = type;
   }
 
   if (exclude && exclude.length) {
     params.exclude = exclude.join();
   }
 
-  return request('/search/', params).then(
-    (results) =>
-      results.map(
-        (result) => new SearchResult(result)
-      )
+  for (const key in extraParams) {
+    params[key] = extraParams[key];
+  }
+
+  const url = endpoint('/search/', params);
+  return request(url).then(
+    data => data.results.map(result => new SearchResult(result))
   );
 }
 
 export function searchParcels(q, bbox) {
-  const params = { q: q, type: 'parcel' };
+  const extraParams = {};
   if (bbox) {
-    params.in_bbox = bbox;
-    params.srid = DEFAULT_SRID;
+    extraParams.in_bbox = bbox;
+    extraParams.srid = DEFAULT_SRID;
   }
-  const url = endpoint('/search/', params);
-  return request(url).then(
-    data => {
-      const listOfPromises = data.results.map(result =>
+  return search(q, 'parcel', [], extraParams).then(
+    searchResults => {
+      const listOfPromises = searchResults.map(result =>
         request(result.entity_url)
       );
-      return Promise.all(listOfPromises).then(allPromisesData => {
-        return allPromisesData.map(result =>
-          processSingleResultResponse('Parcel', result, url)
-        );
-      });
+      return Promise.all(listOfPromises).then(allPromisesData =>
+        allPromisesData.map(result =>
+          processSingleResultResponse('Parcel', result)
+        )
+      );
     }
-  );
-}
+  )
+};
