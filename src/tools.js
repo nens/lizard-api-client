@@ -11,12 +11,15 @@ export function processSingleResultResponse(objectType, result, url) {
   for (const item in definition) {
 
     if (definition[item] === null) {
-      if (result.properties && result.properties.hasOwnProperty(item)) {
-        processedResult[item] = result.properties[item];
-      } else if (result.hasOwnProperty(item)) {
+      if (result.hasOwnProperty(item)) {
+        // Copy value from 'result':
         processedResult[item] = result[item];
+      } else if(result.properties && result.properties.hasOwnProperty(item)) {
+        // Copy value from 'result.properties':
+        processedResult[item] = result.properties[item];
       } else {
-        processedResult[item] = null;
+        // Something unexpected happened..
+        processedResult[item] = undefined;
       }
     } else if (definition[item] === 'Metadata') {
       if (result[item]) {
