@@ -6,20 +6,20 @@ const processingFunctions = {};
 export function processSingleResultResponse(objectType, result, url) {
   const ValueObject = valueObjects[objectType];
   const definition = valueObjectDefinitions[objectType];
-
   const processedResult = {};
 
   for (const item in definition) {
-    if (!definition.hasOwnProperty(item)) {
-      continue;
-    }
 
     if (definition[item] === null) {
-      // Just copy.
-      processedResult[item] = result[item];
+      if (result.properties && result.properties.hasOwnProperty(item)) {
+        processedResult[item] = result.properties[item];
+      } else if (result.hasOwnProperty(item)) {
+        processedResult[item] = result[item];
+      } else {
+        processedResult[item] = null;
+      }
     } else if (definition[item] === 'Metadata') {
       if (result[item]) {
-        // Already there, use it
         processedResult[item] = result[item];
       } else {
         processedResult[item] = new Metadata({
@@ -28,6 +28,9 @@ export function processSingleResultResponse(objectType, result, url) {
           'retrieved': Date.now()
         });
       }
+    } else if (definition[item] === 'Organisation') {
+      processedResult[item] = processSingleResultResponse(
+        'Organisation', result.properties[item]);
     } else if (processingFunctions.hasOwnProperty(definition[item])) {
       // Name of a function, e.g. to process timestamps.
       processedResult[item] = processingFunctions[definition[item]](result[item]);

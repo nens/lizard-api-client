@@ -3,7 +3,30 @@ import Metadata from '../valueobjects/Metadata';
 import Organisation from '../valueobjects/Organisation';
 import { valueObjects } from '../valueobjects/index';
 
+import { processSingleResultResponse } from "../tools";
+
 const DEFAULT_SRID = 4326;
+
+export function search(q, types = null, exclude = []) {
+  let params = {
+    'q': q
+  };
+
+  if (types && types.length) {
+    params.types = types.join();
+  }
+
+  if (exclude && exclude.length) {
+    params.exclude = exclude.join();
+  }
+
+  return request('/search/', params).then(
+    (results) =>
+      results.map(
+        (result) => new SearchResult(result)
+      )
+  );
+}
 
 export function searchParcels(q, bbox) {
   const params = { q: q, type: 'parcel' };
@@ -19,34 +42,9 @@ export function searchParcels(q, bbox) {
       );
       return Promise.all(listOfPromises).then(allPromisesData => {
         return allPromisesData.map(result =>
-          processSingleParcelResponse(result, url)
+          processSingleResultResponse('Parcel', result, url)
         );
       });
     }
   );
 }
-
-function processSingleParcelResponse(result, url) {
-  const props = result.properties;
-  const processedResult = {
-    geometry: result.geometry,
-    id: result.id,
-    code: props.code,
-    name: props.name,
-    external_id: props.external_id,
-    organisation: new Organisation({
-      name: props.organisation.name,
-      unique_id: props.organisation.unique_id,
-      url: props.organisation.url,
-      users_url: props.organisation.users_url
-    }),
-    metadata: new Metadata({
-      sourceUrl: url,
-      index: null,
-      retrieved: Date.now()
-    })
-  };
-  return new valueObjects.Parcel(processedResult);
-}
-
-
