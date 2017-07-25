@@ -10,13 +10,17 @@ export function processSingleResultResponse(objectType, result, url) {
   const processedResult = {};
 
   for (const item in definition) {
+    if (!definition.hasOwnProperty(item)) {
+      // 'toString' and such
+      continue;
+    }
+
     if (definition[item] === null) {
       if (result.hasOwnProperty(item)) {
         // Copy value from 'result':
         processedResult[item] = result[item];
       } else {
         console.error(`Expected to find key '${item}' in result.`);
-        continue;
       }
     } else if (definition[item] === 'Metadata') {
       if (result[item]) {
