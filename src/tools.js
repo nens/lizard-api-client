@@ -18,8 +18,8 @@ export function processSingleResultResponse(objectType, result, url) {
         // Copy value from 'result.properties':
         processedResult[item] = result.properties[item];
       } else {
-        // Something unexpected happened..
-        processedResult[item] = undefined;
+        // Something unexpected happened:
+        console.error(`Expected to find key '${item}' in either result or result.properties`);
       }
     } else if (definition[item] === 'Metadata') {
       if (result[item]) {
@@ -40,7 +40,8 @@ export function processSingleResultResponse(objectType, result, url) {
         // Use organisation data from 'result.properties':
         orgData = result.properties[item];
       } else {
-        console.error("Expected to find organisation in result:", result);
+        // Something unexpected happened:
+        console.error("Expected to find key 'organisation' in either result or resulṫ.properties");
       }
       processedResult[item] = processSingleResultResponse(
         'Organisation', orgData);
