@@ -4,22 +4,19 @@ import { valueObjects, valueObjectDefinitions } from './valueobjects/index';
 const processingFunctions = {};
 
 export function processSingleResultResponse(objectType, result, url) {
+  // Process a single result from a normal API response
   const ValueObject = valueObjects[objectType];
   const definition = valueObjectDefinitions[objectType];
   const processedResult = {};
 
   for (const item in definition) {
-
     if (definition[item] === null) {
       if (result.hasOwnProperty(item)) {
         // Copy value from 'result':
         processedResult[item] = result[item];
-      } else if(result.properties && result.properties.hasOwnProperty(item)) {
-        // Copy value from 'result.properties':
-        processedResult[item] = result.properties[item];
       } else {
-        // Something unexpected happened:
-        console.error(`Expected to find key '${item}' in either result or result.properties`);
+        console.error(`Expected to find key '${item}' in result.`);
+        continue;
       }
     } else if (definition[item] === 'Metadata') {
       if (result[item]) {
@@ -31,20 +28,6 @@ export function processSingleResultResponse(objectType, result, url) {
           'retrieved': Date.now()
         });
       }
-    } else if (definition[item] === 'Organisation') {
-      let orgData;
-      if (result.hasOwnProperty(item)) {
-        // Use organisation data from 'result':
-        orgData = result[item];
-      } else if (result.properties && result.properties.hasOwnProperty(item)) {
-        // Use organisation data from 'result.properties':
-        orgData = result.properties[item];
-      } else {
-        // Something unexpected happened:
-        console.error("Expected to find key 'organisation' in either result or resulṫ.properties");
-      }
-      processedResult[item] = processSingleResultResponse(
-        'Organisation', orgData);
     } else if (processingFunctions.hasOwnProperty(definition[item])) {
       // Name of a function, e.g. to process timestamps.
       processedResult[item] = processingFunctions[definition[item]](result[item]);
@@ -58,6 +41,7 @@ export function processSingleResultResponse(objectType, result, url) {
 }
 
 export function processMultipleResultsResponse(objectType, json, url) {
+  // Process a list of results from a response that has a 'results' array
   if (!json || !json.results) {
     return [];
   }
@@ -73,7 +57,28 @@ export function processMultipleResultsResponse(objectType, json, url) {
   });
 }
 
+export function processSingleFeature(objectType, json, url) {
+  // Process a single result from a rest_framework_gis serializer
+  if (!json || !json.properties || json.type !== 'Feature') {
+    return null;
+  }
+
+  const result = json.properties;
+
+  result.metadata = new Metadata({
+    'sourceUrl': url,
+    'index': null,
+    'retrieved': Date.now()
+  });
+
+  result.geometry = json.geometry;
+  result.id = json.id;
+
+  return processSingleResultResponse(objectType, result);
+}
+
 export function processFeatureCollection(objectType, json, url) {
+  // Process a list of results from a rest_framework_gis serializer
   if (!json || !json.results || json.results.type !== 'FeatureCollection') {
     return [];
   }

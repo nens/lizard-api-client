@@ -1,10 +1,7 @@
 import { endpoint, request } from '../http';
-import Metadata from '../valueobjects/Metadata';
-import Organisation from '../valueobjects/Organisation';
-import { valueObjects } from '../valueobjects/index';
-import SearchResult from "../valueobjects/SearchResult"
+import SearchResult from '../valueobjects/SearchResult';
 
-import { processSingleResultResponse } from "../tools";
+import { processSingleFeature } from '../tools';
 
 const DEFAULT_SRID = 4326;
 
@@ -26,6 +23,7 @@ export function search(q, type = null, exclude = [], extraParams = {}) {
   }
 
   const url = endpoint('/search/', params);
+
   return request(url).then(
     data => data.results.map(result => new SearchResult(result))
   );
@@ -33,6 +31,7 @@ export function search(q, type = null, exclude = [], extraParams = {}) {
 
 export function searchParcels(q, bbox) {
   const extraParams = {};
+
   if (bbox) {
     extraParams.in_bbox = bbox;
     extraParams.srid = DEFAULT_SRID;
@@ -42,11 +41,12 @@ export function searchParcels(q, bbox) {
       const listOfPromises = searchResults.map(result =>
         request(result.entity_url)
       );
+
       return Promise.all(listOfPromises).then(allPromisesData =>
-        allPromisesData.map(result =>
-          processSingleResultResponse('Parcel', result)
+        allPromisesData.map((result, index) =>
+          processSingleFeature('Parcel', result, searchResults[index].entity_url)
         )
       );
     }
-  )
+  );
 };
