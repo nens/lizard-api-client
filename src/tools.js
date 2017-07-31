@@ -4,22 +4,26 @@ import { valueObjects, valueObjectDefinitions } from './valueobjects/index';
 const processingFunctions = {};
 
 export function processSingleResultResponse(objectType, result, url) {
+  // Process a single result from a normal API response
   const ValueObject = valueObjects[objectType];
   const definition = valueObjectDefinitions[objectType];
-
   const processedResult = {};
 
   for (const item in definition) {
     if (!definition.hasOwnProperty(item)) {
+      // 'toString' and such
       continue;
     }
 
     if (definition[item] === null) {
-      // Just copy.
-      processedResult[item] = result[item];
+      if (result.hasOwnProperty(item)) {
+        // Copy value from 'result':
+        processedResult[item] = result[item];
+      } else {
+        console.error(`Expected to find key '${item}' in result.`);
+      }
     } else if (definition[item] === 'Metadata') {
       if (result[item]) {
-        // Already there, use it
         processedResult[item] = result[item];
       } else {
         processedResult[item] = new Metadata({
@@ -41,6 +45,7 @@ export function processSingleResultResponse(objectType, result, url) {
 }
 
 export function processMultipleResultsResponse(objectType, json, url) {
+  // Process a list of results from a response that has a 'results' array
   if (!json || !json.results) {
     return [];
   }
@@ -56,7 +61,28 @@ export function processMultipleResultsResponse(objectType, json, url) {
   });
 }
 
+export function processSingleFeature(objectType, json, url) {
+  // Process a single result from a rest_framework_gis serializer
+  if (!json || !json.properties || json.type !== 'Feature') {
+    return null;
+  }
+
+  const result = json.properties;
+
+  result.metadata = new Metadata({
+    'sourceUrl': url,
+    'index': null,
+    'retrieved': Date.now()
+  });
+
+  result.geometry = json.geometry;
+  result.id = json.id;
+
+  return processSingleResultResponse(objectType, result);
+}
+
 export function processFeatureCollection(objectType, json, url) {
+  // Process a list of results from a rest_framework_gis serializer
   if (!json || !json.results || json.results.type !== 'FeatureCollection') {
     return [];
   }
