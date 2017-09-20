@@ -8,7 +8,7 @@ export const BootstrapDefinition = {
   'authenticated': null,
   'login': null,
   'logout': null,
-  'state': null // Should probably be processed to a DataSet
+  'state': null // TODO Should probably be processed
 };
 
 const BootstrapRecord = definitionToRecord('Bootstrap', BootstrapDefinition);

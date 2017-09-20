@@ -114,33 +114,3 @@ export class DateTime {
       this.to === "start" || this.to === "end");
   }
 }
-
-
-export class Period {
-  /*
-    A time period (to show in a graph, for instance) is two DateTimes.
-
-    So a time period that shows all the available data in a timeseries is e.g.
-
-    [{type: "relative", to: "start", offset: 0},
-     {type: "relative", to: "end", offset: 0}]
-   */
-  constructor(start, end) {
-    if (!(start instanceof DateTime)) {
-      start = DateTime(start);
-    }
-    if (!(end instanceof DateTime)) {
-      end = DateTime(end);
-    }
-    this.start = start;
-    this.end = end;
-  }
-
-  durationSeconds(start, end) {
-    // Pass the start and end of a timeseries if times can be relative to that.
-    const startDate = this.start.asDate(start, end);
-    const endDate = this.end.asDate(start, end);
-
-    return endDate.getTime() - startDate.getTime();
-  }
-}
