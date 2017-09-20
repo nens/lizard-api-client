@@ -7,10 +7,10 @@ export const TimeseriesDefinition = {
   // Fields from the API
   'uuid': null,
   'name': null,
-  'parcel_id': null,
   'start': null,
   'end': null,
-  'events': null
+  'events': null,
+  'observation_type': 'ObservationType'
 };
 
 const TimeseriesRecord = definitionToRecord(

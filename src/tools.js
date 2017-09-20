@@ -20,7 +20,7 @@ export function processSingleResultResponse(objectType, result, url) {
         // Copy value from 'result':
         processedResult[item] = result[item];
       } else {
-        console.error(`Expected to find key '${item}' in result.`);
+        console.error(`Expected to find key '${item}' in result.`, result);
       }
     } else if (definition[item] === 'Metadata') {
       if (result[item]) {

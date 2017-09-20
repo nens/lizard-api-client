@@ -7,7 +7,8 @@ export const BootstrapDefinition = {
   'first_name': null,
   'authenticated': null,
   'login': null,
-  'logout': null
+  'logout': null,
+  'state': null // Should probably be processed to a DataSet
 };
 
 const BootstrapRecord = definitionToRecord('Bootstrap', BootstrapDefinition);
@@ -21,5 +22,16 @@ export class Bootstrap extends BootstrapRecord {
   doLogin() {
     window.location = addGetParameter(
       this.login, 'next', window.location.href);
+  }
+
+  getBounds() {
+    // Return a copy of this.state.spatial.bounds, if present
+    if (!this.state || !this.state.spatial || !this.state.spatial.bounds) {
+      return null;
+    }
+    return {
+      _southWest: this.state.spatial.bounds._southWest,
+      _northEast: this.state.spatial.bounds._northEast
+    }
   }
 }

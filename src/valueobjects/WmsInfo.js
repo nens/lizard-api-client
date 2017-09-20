@@ -1,3 +1,6 @@
+import { insertGetParam } from '../http';
+import { DateTime } from '../datetime';
+
 import { definitionToRecord } from '../definitions';
 
 export const WmsInfoDefinition = {
@@ -9,4 +12,10 @@ export const WmsInfoDefinition = {
 const WmsInfoRecord = definitionToRecord('WmsInfo', WmsInfoDefinition);
 
 export class WmsInfo extends WmsInfoRecord {
+  addTimeToEndpoint(date, start, end) {
+    return insertGetParam(
+      this.endpoint,
+      'TIME',
+      new DateTime(date).asWmsTimeParam(start, end));
+  }
 }
