@@ -5,7 +5,7 @@ export const MeasuringStationDefinition = {
 
   'url': null,
   'id': null,
-  'timeseries': null,
+  'timeseries': 'listOfAssetTimeseries',
   'image_url': null,
   'code': null,
   'name': null,

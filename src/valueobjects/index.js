@@ -1,3 +1,4 @@
+import { AssetTimeseries, AssetTimeseriesDefinition } from './AssetTimeseries';
 import { Bootstrap, BootstrapDefinition } from './Bootstrap';
 import { MeasuringStation, MeasuringStationDefinition } from './MeasuringStation';
 import { ObservationType, ObservationTypeDefinition } from './ObservationType';
@@ -9,6 +10,7 @@ import { Timeseries, TimeseriesDefinition } from './Timeseries';
 import { WmsInfo, WmsInfoDefinition } from './WmsInfo';
 
 export const valueObjects = {
+  AssetTimeseries: AssetTimeseries,
   Bootstrap: Bootstrap,
   MeasuringStation: MeasuringStation,
   ObservationType: ObservationType,
@@ -21,6 +23,7 @@ export const valueObjects = {
 };
 
 export const valueObjectDefinitions = {
+  AssetTimeseries: AssetTimeseriesDefinition,
   Bootstrap: BootstrapDefinition,
   MeasuringStation: MeasuringStationDefinition,
   ObservationType: ObservationTypeDefinition,

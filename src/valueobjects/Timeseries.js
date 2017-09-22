@@ -10,7 +10,8 @@ export const TimeseriesDefinition = {
   'start': null,
   'end': null,
   'events': null,
-  'observation_type': 'ObservationType'
+  'observation_type': 'ObservationType',
+  'last_value': null
 };
 
 const TimeseriesRecord = definitionToRecord(

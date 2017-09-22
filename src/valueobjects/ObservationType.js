@@ -1,5 +1,4 @@
 import { definitionToRecord } from '../definitions';
-
 export const ObservationTypeDefinition = {
   // Metadata, filled in by http.js
   'metadata': 'Metadata',

@@ -33,11 +33,9 @@ export function getTimeseries(timeseriesUuid, start, end, params) {
     parameters.end = end;
   };
 
-  console.log('[*] TS request started...');
   let url = endpoint('/timeseries/', parameters);
 
   return request(url).then((result) => {
-    console.log('[*] TS request finished! result =', result);
     return processMultipleResultsResponse('Timeseries', result, url);
   });
 }

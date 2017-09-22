@@ -42,7 +42,6 @@ export class DateTime {
       date = {type: "absolute", date: date}
     } else if (typeof date === 'number') {
       date = {type: "absolute", date: new Date(date)}
-      console.log("Date is number, date is now", date);
     } else if (typeof date === DateTime) {
       date = date.asObject();
     }
@@ -64,7 +63,6 @@ export class DateTime {
   asDate(start, end) {
     // Needs to be passed the start and end of a timeseries, in case
     // time can be relative to that.
-    console.log("asDate", this.type, this.to, this.offset, this.date, start, end);
     if (this.type === "absolute") {
       return this.date;
     }
@@ -77,7 +75,6 @@ export class DateTime {
       } else if (this.to === "end") {
         base = new DateTime(end).asDate();
       } else {
-        console.log("No this.to (", this.to, ")");
         return null;
       }
       return new Date(base.getTime() + (this.offset || 0) * 1000);

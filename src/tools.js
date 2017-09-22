@@ -1,7 +1,10 @@
 import Metadata from './valueobjects/Metadata';
 import { valueObjects, valueObjectDefinitions } from './valueobjects/index';
 
-const processingFunctions = {};
+const processingFunctions = {
+  listOfAssetTimeseries: (results) => results.map(
+    (result) => processSingleResultResponse('AssetTimeseries', result))
+};
 
 export function processSingleResultResponse(objectType, result, url) {
   // Process a single result from a normal API response
@@ -15,14 +18,28 @@ export function processSingleResultResponse(objectType, result, url) {
       continue;
     }
 
-    if (definition[item] === null) {
+    var def = definition[item];
+    if (/\?$/.test(def)) {
+      // If it ends with a question mark, it's optional.
+      if (!result.hasOwnProperty(item)) {
+        // So this is OK, we put a null value in the record.
+        processedResult[item] = null;
+        continue;
+      } else {
+        // If it is present, remove the '?' from the definition and continue as normal.
+        def = def.slice(0, -1);
+      }
+    }
+
+    if (!def) {
+      // Definition is 'null' or empty string -- we copy the value as is.
       if (result.hasOwnProperty(item)) {
         // Copy value from 'result':
         processedResult[item] = result[item];
       } else {
         console.error(`Expected to find key '${item}' in result.`, result);
       }
-    } else if (definition[item] === 'Metadata') {
+    } else if (def === 'Metadata') {
       if (result[item]) {
         processedResult[item] = result[item];
       } else {
@@ -32,9 +49,9 @@ export function processSingleResultResponse(objectType, result, url) {
           'retrieved': Date.now()
         });
       }
-    } else if (processingFunctions.hasOwnProperty(definition[item])) {
+    } else if (processingFunctions.hasOwnProperty(def)) {
       // Name of a function, e.g. to process timestamps.
-      processedResult[item] = processingFunctions[definition[item]](result[item]);
+      processedResult[item] = processingFunctions[def](result[item]);
     } else {
       // It's a sub-object, recurse.
       processedResult[item] = processSingleResultResponse(definition[item], result[item]);
