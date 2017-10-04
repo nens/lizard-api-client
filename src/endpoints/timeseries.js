@@ -10,8 +10,8 @@ const getStartDefault = (end) => {
 };
 
 const getEndDefault = () => {
-  // For now, return constant value. Later this should be e.g. 'now'
-  return 1455922800000;
+  // Now.
+  return (new Date()).getTime();
 };
 
 const getUUIDforParcel = (parcelId) => {
@@ -21,22 +21,21 @@ const getUUIDforParcel = (parcelId) => {
 };
 
 // Retrieve timeseries from the timeseries API
-export function getTimeseries(
-  parcelId = 321,
-  end = getEndDefault(),
-  start = getStartDefault(end)) {
+export function getTimeseries(timeseriesUuid, start, end, params) {
+  let parameters = {}
+  if (params) {
+    Object.assign(parameters, params);
+  }
+  parameters.uuid = timeseriesUuid;
 
-  const params = {
-    uuid: getUUIDforParcel(parcelId),
-    start: start,
-    end: end
+  if (start && end) {
+    parameters.start = start;
+    parameters.end = end;
   };
 
-  console.log('[*] TS request started...');
-  let url = endpoint('/timeseries/', params);
+  let url = endpoint('/timeseries/', parameters);
 
   return request(url).then((result) => {
-    console.log('[*] TS request finished! result =', result);
     return processMultipleResultsResponse('Timeseries', result, url);
   });
 }

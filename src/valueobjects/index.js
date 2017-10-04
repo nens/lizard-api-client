@@ -1,4 +1,7 @@
+import { AssetTimeseries, AssetTimeseriesDefinition } from './AssetTimeseries';
 import { Bootstrap, BootstrapDefinition } from './Bootstrap';
+import { MeasuringStation, MeasuringStationDefinition } from './MeasuringStation';
+import { ObservationType, ObservationTypeDefinition } from './ObservationType';
 import { Organisation, OrganisationDefinition } from './Organisation';
 import { Parcel, ParcelDefinition } from './Parcel';
 import { RasterStore, RasterStoreDefinition } from './RasterStore';
@@ -7,7 +10,10 @@ import { Timeseries, TimeseriesDefinition } from './Timeseries';
 import { WmsInfo, WmsInfoDefinition } from './WmsInfo';
 
 export const valueObjects = {
+  AssetTimeseries: AssetTimeseries,
   Bootstrap: Bootstrap,
+  MeasuringStation: MeasuringStation,
+  ObservationType: ObservationType,
   Organisation: Organisation,
   Parcel: Parcel,
   RasterStore: RasterStore,
@@ -17,7 +23,10 @@ export const valueObjects = {
 };
 
 export const valueObjectDefinitions = {
+  AssetTimeseries: AssetTimeseriesDefinition,
   Bootstrap: BootstrapDefinition,
+  MeasuringStation: MeasuringStationDefinition,
+  ObservationType: ObservationTypeDefinition,
   Organisation: OrganisationDefinition,
   Parcel: ParcelDefinition,
   RasterStore: RasterStoreDefinition,

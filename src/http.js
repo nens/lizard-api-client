@@ -47,3 +47,20 @@ export function request(url) {
     request.send();
   });
 }
+
+export function insertGetParam(url, key, value) {
+  // Helper function that escapes key and value and adds it to the URL, works
+  // if there are already params present and when not.
+  // Does not yet check if key already exists, also not if '#' is
+  // present, just adds to the end!
+
+  key = encodeURIComponent(key);
+  value = encodeURIComponent(value);
+  const kvp = key + '=' + value;
+
+  if (url.indexOf('?') >= 0) {
+    return url + '&' + kvp;
+  } else {
+    return url + '?' + kvp;
+  }
+}
