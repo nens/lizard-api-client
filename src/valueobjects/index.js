@@ -1,5 +1,6 @@
 import { AssetTimeseries, AssetTimeseriesDefinition } from './AssetTimeseries';
 import { Bootstrap, BootstrapDefinition } from './Bootstrap';
+import { LegendData, LegendDataDefinition } from './LegendData';
 import { MeasuringStation, MeasuringStationDefinition } from './MeasuringStation';
 import { ObservationType, ObservationTypeDefinition } from './ObservationType';
 import { Organisation, OrganisationDefinition } from './Organisation';
@@ -12,6 +13,7 @@ import { WmsInfo, WmsInfoDefinition } from './WmsInfo';
 export const valueObjects = {
   AssetTimeseries: AssetTimeseries,
   Bootstrap: Bootstrap,
+  LegendData: LegendData,
   MeasuringStation: MeasuringStation,
   ObservationType: ObservationType,
   Organisation: Organisation,
@@ -25,6 +27,7 @@ export const valueObjects = {
 export const valueObjectDefinitions = {
   AssetTimeseries: AssetTimeseriesDefinition,
   Bootstrap: BootstrapDefinition,
+  LegendData: LegendDataDefinition,
   MeasuringStation: MeasuringStationDefinition,
   ObservationType: ObservationTypeDefinition,
   Organisation: OrganisationDefinition,

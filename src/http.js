@@ -11,19 +11,28 @@ const baseUrl = (() => {
   return absoluteBase;
 })();
 
-export function endpoint(urlFragment, params = {}) {
-  let totalParams = Object.assign({'format': 'json'}, params);
-  let url = baseUrl + (urlFragment[0] === '/' ? '' : '/') + urlFragment;
-
-  let query = Object.keys(totalParams).map(
-    k => encodeURIComponent(k) + '=' + encodeURIComponent(totalParams[k])
+export function combineUrlAndParams(url, params) {
+  let query = Object.keys(params).map(
+    k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])
   ).join('&');
 
   if (query) {
-    url = url + '?' + query;
+    if (url.indexOf('?') >= 0) {
+      return url + '&' + query;
+    } else {
+      return url + '?' + query;
+    }
+    return url;
   }
+}
 
-  return url;
+export function endpoint(urlFragment, params = {}) {
+  /* Construct URL for API endpoint; urlFragment is relative to the API's baseUrl and
+     we add 'format=json' to the params. */
+  let url = baseUrl + (urlFragment[0] === '/' ? '' : '/') + urlFragment;
+  let totalParams = Object.assign({'format': 'json'}, params);
+
+  return combineUrlAndParams(url, totalParams);
 }
 
 export function request(url) {
@@ -53,14 +62,7 @@ export function insertGetParam(url, key, value) {
   // if there are already params present and when not.
   // Does not yet check if key already exists, also not if '#' is
   // present, just adds to the end!
-
-  key = encodeURIComponent(key);
-  value = encodeURIComponent(value);
-  const kvp = key + '=' + value;
-
-  if (url.indexOf('?') >= 0) {
-    return url + '&' + kvp;
-  } else {
-    return url + '?' + kvp;
-  }
+  let params = {};
+  params[key] = value;
+  return combineUrlAndParams(url, params);
 }
