@@ -1,4 +1,4 @@
-import { request, combineUrlAndParams } from '../http';
+import { request, insertGetParam, combineUrlAndParams } from '../http';
 import { DateTime } from '../datetime';
 import { definitionToRecord } from '../definitions';
 import { processSingleResultResponse } from '../tools';
@@ -19,18 +19,41 @@ export class WmsInfo extends WmsInfoRecord {
       new DateTime(date).asWmsTimeParam(start, end));
   }
 
-  getLimits(leafletArrayBounds, width, height) {
-    // Do a WMS GetLimits request to the raster server (it's not standard WMS).
-    // Gets the minimum and maximum value for this layer, in the area defined
-    // by the (array form of the) Leaflet bounds and the width and height of the map.
+  getLimits(leafletLatLngBounds, width = 256, height = 256, params = {}) {
     // Leaflet array looks like [[southwest-lat, southwest-lng],
     // [northeast-lat, northeast-lng]].
+    // Pass a CRS if version is 1.3.0, or a SRS if version is 1.1.1.
 
+    params.request = 'getlimits';
+
+    if (!('version' in params)) {
+      params.version = '1.1.1';
+    }
+
+    // See e.g. https://viswaug.wordpress.com/2009/03/15/reversed-co-ordinate-axis-order-for-epsg4326-vs-crs84-when-requesting-wms-130-images/
+    // for an explanation...
+    if (params.version === '1.1.1') {
+      if (!('srs' in params)) {
+        params.srs = 'EPSG:4326'; // WGS84, "lat/lon"
+      }
+    } else {
+      if (!('crs' in params)) {
+        params.crs = 'CRS:84'; // Also WGS84!
+      }
+    }
+    if (!('layers' in params)) {
+      params.layers = this.layer;
+    }
+    params.bbox = leafletLatLngBounds.toBBoxString();
+    params.width = width;
+    params.height = height;
+
+    const url = combineUrlAndParams(this.endpoint, params);
+
+    return request(url);
   }
 
-  getLegend(styles, steps=10) {
-    const wmsEndpoint = 'https://nxt.staging.lizard.net/api/v3/wms'; // this.endpoint!
-
+  getLegend(styles, steps = 10) {
     const params = {
       service: 'wms',
       request: 'getlegend',
@@ -39,7 +62,8 @@ export class WmsInfo extends WmsInfoRecord {
       style: styles
     };
 
-    const url = combineUrlAndParams(wmsEndpoint, params);
+    const url = combineUrlAndParams(this.endpoint, params);
+
     return request(url).then(function (data) {
       return processSingleResultResponse('LegendData', data, url);
     });

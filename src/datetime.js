@@ -33,15 +33,15 @@ export class DateTime {
   If a DateTime instance is given, create a copy.
   */
 
-  constructor (date) {
-    if (date === "absolute") {
-      date = {type: "absolute"};
-    } else if (date === "relative") {
-      date = {type: "relative"};
+  constructor(date = 'absolute') {
+    if (date === 'absolute') {
+      date = {type: 'absolute'};
+    } else if (date === 'relative') {
+      date = {type: 'relative'};
     } else if (date instanceof Date) {
-      date = {type: "absolute", date: date}
+      date = {type: 'absolute', date: date};
     } else if (typeof date === 'number') {
-      date = {type: "absolute", date: new Date(date)}
+      date = {type: 'absolute', date: new Date(date)};
     } else if (typeof date === DateTime) {
       date = date.asObject();
     }
@@ -51,11 +51,11 @@ export class DateTime {
     this.to = null;
     this.offset = null;
 
-    if (this.type === "absolute") {
+    if (this.type === 'absolute') {
       this.date = date.date || new Date();
     } else {
       // Relative
-      this.to = date.to || "now";
+      this.to = date.to || 'now';
       this.offset = date.offset || 0;
     }
   }
@@ -63,22 +63,24 @@ export class DateTime {
   asDate(start, end) {
     // Needs to be passed the start and end of a timeseries, in case
     // time can be relative to that.
-    if (this.type === "absolute") {
+    if (this.type === 'absolute') {
       return this.date;
     }
-    if (this.type === "relative") {
+    if (this.type === 'relative') {
       let base;
-      if (this.to === "now") {
+
+      if (this.to === 'now') {
         base = new Date();
-      } else if (this.to === "start") {
+      } else if (this.to === 'start') {
         base = new DateTime(start).asDate();
-      } else if (this.to === "end") {
+      } else if (this.to === 'end') {
         base = new DateTime(end).asDate();
       } else {
         return null;
       }
       return new Date(base.getTime() + (this.offset || 0) * 1000);
     }
+    return null;
   }
 
   // Convert to various formats
@@ -95,9 +97,10 @@ export class DateTime {
   asWmsTimeParam(start, end) {
     const d = this.asDate(start, end);
     let utcTime = d.toISOString();
+
     // String now has '.000Z' at the end, not sure if that is OK -- but it seems to work
     // after removing my hacks that removed it.
-    return utcTime
+    return utcTime;
   }
 
   asTimestamp(start, end) {
@@ -107,7 +110,7 @@ export class DateTime {
   needsStartEnd() {
     // If this datetime is relative to a start or end, then they need to be passed. If not,
     // then it's OK to not compute them and just pass in null.
-    return this.type === "relative" && (
-      this.to === "start" || this.to === "end");
+    return this.type === 'relative' && (
+      this.to === 'start' || this.to === 'end');
   }
 }
