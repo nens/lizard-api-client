@@ -22,8 +22,8 @@ export function combineUrlAndParams(url, params) {
     } else {
       return url + '?' + query;
     }
-    return url;
   }
+  return url;
 }
 
 export function endpoint(urlFragment, params = {}) {
@@ -43,7 +43,15 @@ export function request(url) {
       if (this.readyState !== 4) return;
 
       if (this.status >= 200 && this.status < 300) {
-        let json = JSON.parse(this.response);
+        let json = null;
+
+        try {
+          json = JSON.parse(this.response);
+        } catch (e) {
+          console.error(
+            'Lizard-api-client could not parse expected JSON result;',
+            'request=', url, 'response=', this.response, 'error=', e);
+        }
 
         resolve(json);
       } else {
@@ -63,6 +71,7 @@ export function insertGetParam(url, key, value) {
   // Does not yet check if key already exists, also not if '#' is
   // present, just adds to the end!
   let params = {};
+
   params[key] = value;
   return combineUrlAndParams(url, params);
 }
