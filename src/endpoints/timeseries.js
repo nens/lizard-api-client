@@ -22,7 +22,8 @@ const getUUIDforParcel = (parcelId) => {
 
 // Retrieve timeseries from the timeseries API
 export function getTimeseries(timeseriesUuid, start, end, params) {
-  let parameters = {}
+  let parameters = {};
+
   if (params) {
     Object.assign(parameters, params);
   }

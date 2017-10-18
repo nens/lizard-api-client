@@ -21,6 +21,7 @@ const ObservationTypeRecord = definitionToRecord(
 export class ObservationType extends ObservationTypeRecord {
   getLegendString() {
     let legend = this.parameter;
+
     if (this.unit) {
       legend += ' (' + this.unit + ')';
     }
