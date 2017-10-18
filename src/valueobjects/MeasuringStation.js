@@ -20,4 +20,17 @@ const MeasuringStationRecord = definitionToRecord(
   'MeasuringStation', MeasuringStationDefinition);
 
 export class MeasuringStation extends MeasuringStationRecord {
+  getTimeseriesByUuid(uuid) {
+    // Return the AssetTimeseries belonging to this asset that has UUID,
+    // or undefined if it isn't found.
+    for (let i = 0; i < this.timeseries.length; i++) {
+      const timeseries = this.timeseries[i];
+
+      if (timeseries.uuid === uuid) {
+        return timeseries;
+      }
+    }
+    // Not found
+    return undefined;
+  }
 }

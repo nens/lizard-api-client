@@ -8,6 +8,7 @@ import { Parcel, ParcelDefinition } from './Parcel';
 import { RasterStore, RasterStoreDefinition } from './RasterStore';
 import { RasterStoreDetail, RasterStoreDetailDefinition } from './RasterStoreDetail';
 import { Timeseries, TimeseriesDefinition } from './Timeseries';
+import { TimeseriesAlarm, TimeseriesAlarmDefinition } from './TimeseriesAlarm';
 import { WmsInfo, WmsInfoDefinition } from './WmsInfo';
 
 export const valueObjects = {
@@ -21,6 +22,7 @@ export const valueObjects = {
   RasterStore: RasterStore,
   RasterStoreDetail: RasterStoreDetail,
   Timeseries: Timeseries,
+  TimeseriesAlarm: TimeseriesAlarm,
   WmsInfo: WmsInfo
 };
 
@@ -35,5 +37,6 @@ export const valueObjectDefinitions = {
   RasterStore: RasterStoreDefinition,
   RasterStoreDetail: RasterStoreDetailDefinition,
   Timeseries: TimeseriesDefinition,
+  TimeseriesAlarm: TimeseriesAlarmDefinition,
   WmsInfo: WmsInfoDefinition
 };
