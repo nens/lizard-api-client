@@ -23,7 +23,7 @@ export function getTimeseriesAlarms(filters = {}) {
           'active': true,
           'timeseries': {
             'url': 'https://nxt.staging.lizard.net/api/v3/timeseries/0ec8a6b9-c2f0-4240-b663-f073895d4744/',
-            'uuid': "bf34f12e-08c5-4226-a03d-fcf3a86cf1f9",
+            'uuid': 'bf34f12e-08c5-4226-a03d-fcf3a86cf1f9',
             'name': 'OMZD_30,1_BARO',
             'code': '0ec8a6b9-c2f0-4240-b663-f073895d4744'
           },
@@ -58,7 +58,7 @@ export function getTimeseriesAlarms(filters = {}) {
           'active': true,
           'timeseries': {
             'url': 'https://nxt.staging.lizard.net/api/v3/timeseries/0ec8a6b9-c2f0-4240-b663-f073895d4744/',
-            'uuid': '0ec8a6b9-c2f0-4240-b663-f073895d4744',
+            'uuid': '34b144a0-7849-4e3f-aaa8-b0fffc86abbf',
             'name': 'WNS1400',
             'code': 'WNS1400::second::1::3600'
           },
@@ -74,11 +74,11 @@ export function getTimeseriesAlarms(filters = {}) {
             'reference_frame': '',
             'compartment': ''
           },
-          'thresholds': [],
+          'thresholds': [0.377],
           'messages': [],
-          'warning_threshold': null,
-          'warning_value': null,
-          'warning_timestamp': null
+          'warning_threshold': 0.377,
+          'warning_value': 0.4,
+          'warning_timestamp': new Date().getTime()
         }
       ]
     };
