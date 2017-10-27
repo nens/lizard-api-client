@@ -128,8 +128,8 @@ export function makeReducer(objectName) {
 }
 
 export function makeGetter(objectState, params = {}) {
-  const FETCH_TIMEOUT_SECONDS = params.fetchTimeout || 0;
-  const STORE_TIMEOUT_SECONDS = params.storeTimeout || 0;
+  const FETCH_TIMEOUT_MS = (params.fetchTimeout || 0) * 1000;
+  const STORE_TIMEOUT_MS = (params.storeTimeout || 0) * 1000;
   const RETRY_ERROR = params.retryError || true;
 
   return function getter(id) {
@@ -144,7 +144,7 @@ export function makeGetter(objectState, params = {}) {
       returnValue = data[id];
 
       // But is it old? Then still get it
-      if (STORE_TIMEOUT_SECONDS && metadata[id].receivedTimestamp) {
+      if (STORE_TIMEOUT_MS && metadata[id].receivedTimestamp) {
         const timeStored = (new Date().getTime()) - metadata[id].receivedTimestamp;
 
         if (timeStored > metadata[id].receivedTimestamp) {
@@ -162,11 +162,11 @@ export function makeGetter(objectState, params = {}) {
         }
       } else {
         // We *are* fetching it. Does that stop us?
-        if (FETCH_TIMEOUT_SECONDS && metadata[id].fetchTimestamp) {
+        if (FETCH_TIMEOUT_MS && metadata[id].fetchTimestamp) {
           // Depends on how long ago it was.
           const timeFetching = (new Date().getTime()) - metadata[id].fetchTimestamp;
 
-          shouldFetch = timeFetching > FETCH_TIMEOUT_SECONDS;
+          shouldFetch = timeFetching > FETCH_TIMEOUT_MS;
         } else {
           // Yes.
           shouldFetch = false;
