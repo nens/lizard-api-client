@@ -55,9 +55,6 @@
    So no separate 'ADD_OBJECTNAME' etc as that isn't necessary for
    anything.
 
-   Each fetch / receive has its own random string, to check that a
-   received object belongs to the latest fetch (in case of timeouts).
-
    Internal state has the form:
 
    { data: {}, metadata: {} }
