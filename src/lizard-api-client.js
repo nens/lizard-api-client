@@ -7,3 +7,4 @@ export { getTimeseries } from './endpoints/timeseries';
 export { getTimeseriesAlarms } from './endpoints/timeseriesalarms';
 export { search, searchParcels } from './endpoints/search';
 export { valueObjects } from './valueobjects';
+export { makeReducer, makeGetter, makeFetcher, makeDeleter, getOrFetch } from './redux';
