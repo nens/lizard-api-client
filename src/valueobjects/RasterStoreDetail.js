@@ -1,3 +1,5 @@
+import { request, endpoint } from '../http';
+import { DateTime } from '../datetime';
 import { definitionToRecord } from '../definitions';
 
 // Fields from the detail page, more than from the list page
@@ -11,7 +13,7 @@ export const RasterStoreDetailDefinition = {
 
   'name': null,
   'description': null,
-  'organisation': null,
+  'organisation': 'Organisation',
   'access_modifier': null,
   'origin': null,
   'interval': null,
@@ -20,7 +22,7 @@ export const RasterStoreDetailDefinition = {
   'supplier': null,
   'supplier_code': null,
   'last_modified': null,
-
+  'observation_type': 'ObservationType',
   'wms_info': 'WmsInfo',
   'options': null
 };
@@ -29,4 +31,34 @@ const RasterStoreDetailRecord = definitionToRecord(
   'RasterStoreDetail', RasterStoreDetailDefinition);
 
 export class RasterStoreDetail extends RasterStoreDetailRecord {
+  getData(filters = {}) {
+    return request(endpoint('/rasters/' + this.uuid + '/data/', filters));
+  }
+
+  getTimesteps(filters = {}) {
+    return request(endpoint('/rasters/' + this.uuid + '/timesteps/', filters));
+  }
+
+  getDataAtPoint(point, startDateTime, endDateTime, filters = {}) {
+    console.log('Getting at point', point, 'start', startDateTime, 'end', endDateTime);
+
+    const coordinates = point.coordinates;
+    const defaults = {
+      agg: 'average',
+      geom: `POINT (${coordinates[0]} ${coordinates[1]} ${coordinates[2] || 0})`,
+      rasters: this.uuid,
+      srs: 'EPSG:4326',
+      start: new DateTime(startDateTime).asWmsTimeParam(
+        this.first_value_timestamp,
+        this.last_value_timestamp),
+      stop: new DateTime(endDateTime).asWmsTimeParam(
+        this.first_value_timestamp,
+        this.last_value_timestamp),
+      window: 3600000
+    };
+
+    return request(
+      endpoint('/raster-aggregates/',
+               Object.assign(defaults, filters)));
+  }
 }

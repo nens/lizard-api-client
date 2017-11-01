@@ -40,10 +40,10 @@ export class DateTime {
       date = {type: 'relative'};
     } else if (date instanceof Date) {
       date = {type: 'absolute', date: date};
-    } else if (typeof date === 'number') {
-      date = {type: 'absolute', date: new Date(date)};
     } else if (typeof date === DateTime) {
       date = date.asObject();
+    } else if (typeof date === 'number' || typeof date === 'string') {
+      date = {type: 'absolute', date: new Date(date)};
     }
 
     this.type = date.type;
