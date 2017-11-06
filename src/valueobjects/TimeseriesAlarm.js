@@ -23,6 +23,11 @@ const TimeseriesAlarmRecord = definitionToRecord(
   'TimeseriesAlarm', TimeseriesAlarmDefinition);
 
 export class TimeseriesAlarm extends TimeseriesAlarmRecord {
+  isTimeseriesAlarm() {
+    // Useful in case we have a mixed list of alarms
+    return true;
+  }
+
   activeWarning() {
     // If a warning is not active right now, all the warning_ fields are null.
     return this.warning_threshold !== null;
