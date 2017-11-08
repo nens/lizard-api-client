@@ -40,8 +40,6 @@ export class RasterStoreDetail extends RasterStoreDetailRecord {
   }
 
   getDataAtPoint(point, startDateTime, endDateTime, filters = {}) {
-    console.log('Getting at point', point, 'start', startDateTime, 'end', endDateTime);
-
     const coordinates = point.coordinates;
     const defaults = {
       agg: 'average',
