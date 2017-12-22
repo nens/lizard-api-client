@@ -8,7 +8,8 @@ export const BootstrapDefinition = {
   'authenticated': null,
   'login': null,
   'logout': null,
-  'state': null // TODO Should probably be processed
+  'state': null, // TODO Should probably be processed
+  'configuration': null // For individual clients
 };
 
 const BootstrapRecord = definitionToRecord('Bootstrap', BootstrapDefinition);
@@ -32,6 +33,6 @@ export class Bootstrap extends BootstrapRecord {
     return {
       _southWest: this.state.spatial.bounds._southWest,
       _northEast: this.state.spatial.bounds._northEast
-    }
+    };
   }
 }
