@@ -23,6 +23,8 @@ export class DateTime {
     type: "relative",
     to: "now",  // or "start" or "end" (of a timeseries)
     offset: // Number of seconds for a single time
+    modulo: // Optional, for relative to now only.
+      // Current time is rounded down to a multiple of this many seconds.
   }
 
   If "to" isn't given, it's to now; if offset isn't given, it's 0.
@@ -50,6 +52,7 @@ export class DateTime {
     this.date = null;
     this.to = null;
     this.offset = null;
+    this.modulo = date.modulo || null;
 
     if (this.type === 'absolute') {
       this.date = date.date || new Date();
@@ -71,6 +74,12 @@ export class DateTime {
 
       if (this.to === 'now') {
         base = new Date();
+        if (this.modulo) {
+          let ms = base.getTime();
+
+          ms -= (ms % (this.modulo * 1000));
+          base = new Date(ms);
+        }
       } else if (this.to === 'start') {
         base = new DateTime(start).asDate();
       } else if (this.to === 'end') {

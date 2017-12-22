@@ -5,6 +5,7 @@ import { MeasuringStation, MeasuringStationDefinition } from './MeasuringStation
 import { ObservationType, ObservationTypeDefinition } from './ObservationType';
 import { Organisation, OrganisationDefinition } from './Organisation';
 import { Parcel, ParcelDefinition } from './Parcel';
+import { RasterAlarm, RasterAlarmDefinition } from './RasterAlarm';
 import { RasterStore, RasterStoreDefinition } from './RasterStore';
 import { RasterStoreDetail, RasterStoreDetailDefinition } from './RasterStoreDetail';
 import { Timeseries, TimeseriesDefinition } from './Timeseries';
@@ -19,6 +20,7 @@ export const valueObjects = {
   ObservationType: ObservationType,
   Organisation: Organisation,
   Parcel: Parcel,
+  RasterAlarm: RasterAlarm,
   RasterStore: RasterStore,
   RasterStoreDetail: RasterStoreDetail,
   Timeseries: Timeseries,
@@ -34,6 +36,7 @@ export const valueObjectDefinitions = {
   ObservationType: ObservationTypeDefinition,
   Organisation: OrganisationDefinition,
   Parcel: ParcelDefinition,
+  RasterAlarm: RasterAlarmDefinition,
   RasterStore: RasterStoreDefinition,
   RasterStoreDetail: RasterStoreDetailDefinition,
   Timeseries: TimeseriesDefinition,
