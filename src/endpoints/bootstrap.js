@@ -1,8 +1,8 @@
 import { request } from '../http';
 import { processSingleResultResponse, flatten } from '../tools';
 
-export function getBootstrap() {
-  let url = '/bootstrap/lizard/';
+export function getBootstrap(clientSlug = 'lizard') {
+  let url = `/bootstrap/${clientSlug}/`;
 
   return request(url).then(function (result) {
     // This endpoint's JSON is quite nested, but the nesting isn't very relevant
@@ -15,7 +15,8 @@ export function getBootstrap() {
       authenticated: result.user.authenticated,
       login: result.sso.login,
       logout: result.sso.logout,
-      state: result.state
+      state: result.state,
+      configuration: result.configuration
     };
 
     return processSingleResultResponse('Bootstrap', r, url);
