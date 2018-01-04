@@ -11,6 +11,11 @@ export function processSingleResultResponse(objectType, result, url) {
   const ValueObject = valueObjects[objectType];
   const definition = valueObjectDefinitions[objectType];
   const processedResult = {};
+  var def;
+
+  if (result === null || result === undefined) {
+    return null;
+  }
 
   for (const item in definition) {
     if (!definition.hasOwnProperty(item)) {
@@ -18,7 +23,8 @@ export function processSingleResultResponse(objectType, result, url) {
       continue;
     }
 
-    var def = definition[item];
+    def = definition[item];
+
     if (/\?$/.test(def)) {
       // If it ends with a question mark, it's optional.
       if (!result.hasOwnProperty(item)) {
