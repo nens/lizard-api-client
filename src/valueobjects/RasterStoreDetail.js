@@ -51,8 +51,7 @@ export class RasterStoreDetail extends RasterStoreDetailRecord {
         this.last_value_timestamp),
       stop: new DateTime(endDateTime).asWmsTimeParam(
         this.first_value_timestamp,
-        this.last_value_timestamp),
-      window: 3600000
+        this.last_value_timestamp)
     };
 
     return request(
