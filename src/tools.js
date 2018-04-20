@@ -54,7 +54,7 @@ export function processSingleResultResponse(objectType, result, url) {
       processedResult[item] = processingFunctions[def](result[item]);
     } else {
       // It's a sub-object, recurse.
-      processedResult[item] = processSingleResultResponse(definition[item], result[item]);
+      processedResult[item] = processSingleResultResponse(def, result[item]);
     }
   }
 
