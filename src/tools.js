@@ -8,8 +8,6 @@ const processingFunctions = {
 
 export function processSingleResultResponse(objectType, result, url) {
   // Process a single result from a normal API response
-  console.log("[F] processSingleResultResponse; args:", objectType, result, url);
-
   const ValueObject = valueObjects[objectType];
   const definition = valueObjectDefinitions[objectType];
   const processedResult = {};
