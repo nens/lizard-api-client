@@ -43,6 +43,12 @@ export class RasterAlarm extends RasterAlarmRecord {
 
     if (this.intersection.raster !== rasterUrl) return false;
 
+    return this.sameGeometry(geometry);
+  }
+
+  sameGeometry(geometry) {
+    if (!this.intersection) return false;
+
     const thisGeom = this.intersection.geometry;
 
     if (!thisGeom || !geometry) return false;
