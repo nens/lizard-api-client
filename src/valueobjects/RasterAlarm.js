@@ -5,6 +5,8 @@ export const RasterAlarmDefinition = {
   metadata: 'Metadata',
 
   // Fields from the API
+
+  // key-value definitions { <key>: <value> ::= null | 'String' | 'String?' }
   url: null,
   uuid: null,
   name: null,
@@ -12,7 +14,7 @@ export const RasterAlarmDefinition = {
   active: null,
   intersection: null,
   comparison: null,
-  'observation_type': null,
+  'observation_type': 'ObservationType?',
   thresholds: null,
   messages: null,
   'warning_threshold': null,
