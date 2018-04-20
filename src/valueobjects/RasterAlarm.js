@@ -12,7 +12,7 @@ export const RasterAlarmDefinition = {
   active: null,
   intersection: null,
   comparison: null,
-  'observation_type': 'ObservationType',
+  'observation_type': null,
   thresholds: null,
   messages: null,
   'warning_threshold': null,
