@@ -6,7 +6,6 @@ export function definitionToRecord(recordName, definition) {
   let record = { 'metadata': null };
 
   for (const prop in definition) {
-    console.log("[dbg] prop =", prop);
     if (definition.hasOwnProperty(prop)) {
       record[prop] = null;
     }
