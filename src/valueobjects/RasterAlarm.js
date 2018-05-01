@@ -53,9 +53,14 @@ export class RasterAlarm extends RasterAlarmRecord {
 
     if (!thisGeom || !geometry) return false;
 
-    return (geometry.type === thisGeom.type &&
-            geometry.coordinates.length === thisGeom.coordinates.length &&
-            geometry.coordinates.every(
-              function (v, i) { return v === thisGeom.coordinates[i]; }));
+    // Only check points.
+    if (geometry.type !== 'Point' || thisGeom.type !== 'Point') return false;
+
+    if (geometry.coordinates.length < 2 || thisGeom.coordinates.length < 2) return false;
+
+    return (
+      parseFloat(geometry.coordinates[0]) === parseFloat(thisGeom.coordinates[0]) &&
+      parseFloat(geometry.coordinates[1]) === parseFloat(thisGeom.coordinates[1])
+    );
   }
 }
