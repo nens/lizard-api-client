@@ -62,12 +62,19 @@ export function processSingleResultResponse(objectType, result, url) {
 }
 
 export function processMultipleResultsResponse(objectType, json, url) {
+  console.log("[F] processMultipleResultsResponse; args:");
+  console.log("*** objectType =", objectType);
+  console.log("*** json =", json);
+  console.log("*** url =", url);
   // Process a list of results from a response that has a 'results' array
   if (!json || !json.results) {
     return [];
   }
 
   return json.results.map(function (result, idx) {
+
+
+
     result.metadata = new Metadata({
       'sourceUrl': url,
       'index': idx,
