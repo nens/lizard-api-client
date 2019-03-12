@@ -28,3 +28,15 @@ export class ObservationType extends ObservationTypeRecord {
     return legend;
   }
 }
+
+export const DefaultObservationType = {
+  'url': null,
+  'code': 'unknown',
+  'parameter': 'Unknown',
+  'unit': 'unknown',
+  'scale': 'ratio',
+  'description': 'Placeholder for a missing observation type',
+  'domain_values': null,
+  'reference_frame': null,
+  'compartment': null
+};

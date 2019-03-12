@@ -1,5 +1,6 @@
 import Metadata from './valueobjects/Metadata';
-import { valueObjects, valueObjectDefinitions } from './valueobjects/index';
+import { valueObjects, valueObjectDefinitions,
+         valueObjectDefaults} from './valueobjects/index';
 
 const processingFunctions = {
   listOfAssetTimeseries: (results) => results.map(
@@ -18,16 +19,27 @@ export function processSingleResultResponse(objectType, result, url) {
       continue;
     }
 
-    var def = definition[item];
-    if (/\?$/.test(def)) {
-      // If it ends with a question mark, it's optional.
-      if (!result.hasOwnProperty(item)) {
-        // So this is OK, we put a null value in the record.
+    let def = definition[item];
+
+    // If it ends with a question mark, it's optional.
+    let optional = /\?$/.test(def);
+
+    if (optional) {
+      def = def.slice(0, -1); // Remove question mark
+    }
+
+    if (!result.hasOwnProperty(item) || result[item] === null) {
+      // It's missing.
+      if (optional) {
+        // ...and that is OK. Put null and we are done.
         processedResult[item] = null;
         continue;
+      } else if (valueObjectDefaults.hasOwnProperty(def)) {
+        // Is there a default? Then copy it into the result and carry on.
+        result[item] = Object.assign({}, valueObjectDefaults[def]);
       } else {
-        // If it is present, remove the '?' from the definition and continue as normal.
-        def = def.slice(0, -1);
+        throw new Error(
+          'No value found for required item ' + def + ' from ' + url);
       }
     }
 
