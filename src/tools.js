@@ -61,15 +61,15 @@ export function processSingleResultResponse(objectType, result, url) {
           throw new Error(
             'No value found for required item ' + def + ' from ' + url);
         }
+      }
+
+      // Do something with the definition
+      if (processingFunctions.hasOwnProperty(def)) {
+        // Name of a function, e.g. to process timestamps.
+        processedResult[item] = processingFunctions[def](result[item]);
       } else {
-        // Do something with the definition
-        if (processingFunctions.hasOwnProperty(def)) {
-          // Name of a function, e.g. to process timestamps.
-          processedResult[item] = processingFunctions[def](result[item]);
-        } else {
-          // It's a sub-object, recurse.
-          processedResult[item] = processSingleResultResponse(def, result[item]);
-        }
+        // It's a sub-object, recurse.
+        processedResult[item] = processSingleResultResponse(def, result[item]);
       }
     }
   }
