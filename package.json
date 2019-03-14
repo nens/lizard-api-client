@@ -1,6 +1,6 @@
 {
   "name": "lizard-api-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Library to get data from the Lizard API",
   "main": "lib/LizardApiClient.js",
   "scripts": {
