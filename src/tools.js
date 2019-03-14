@@ -1,5 +1,6 @@
 import Metadata from './valueobjects/Metadata';
-import { valueObjects, valueObjectDefinitions } from './valueobjects/index';
+import { valueObjects, valueObjectDefinitions,
+         valueObjectDefaults} from './valueobjects/index';
 
 const processingFunctions = {
   listOfAssetTimeseries: (results) => results.map(
@@ -18,28 +19,10 @@ export function processSingleResultResponse(objectType, result, url) {
       continue;
     }
 
-    var def = definition[item];
-    if (/\?$/.test(def)) {
-      // If it ends with a question mark, it's optional.
-      if (!result.hasOwnProperty(item)) {
-        // So this is OK, we put a null value in the record.
-        processedResult[item] = null;
-        continue;
-      } else {
-        // If it is present, remove the '?' from the definition and continue as normal.
-        def = def.slice(0, -1);
-      }
-    }
+    let def = definition[item];
 
-    if (!def) {
-      // Definition is 'null' or empty string -- we copy the value as is.
-      if (result.hasOwnProperty(item)) {
-        // Copy value from 'result':
-        processedResult[item] = result[item];
-      } else {
-        console.error(`Expected to find key '${item}' in result.`, result);
-      }
-    } else if (def === 'Metadata') {
+    if (def === 'Metadata') {
+      // Add it and continue the loop.
       if (result[item]) {
         processedResult[item] = result[item];
       } else {
@@ -49,12 +32,45 @@ export function processSingleResultResponse(objectType, result, url) {
           'retrieved': Date.now()
         });
       }
-    } else if (processingFunctions.hasOwnProperty(def)) {
-      // Name of a function, e.g. to process timestamps.
-      processedResult[item] = processingFunctions[def](result[item]);
+    } else if (!def) {
+      // Definition is 'null' or empty string -- we copy the value as is.
+      if (result.hasOwnProperty(item)) {
+        // Copy value from 'result':
+        processedResult[item] = result[item];
+      } else {
+        console.error(`Expected to find key '${item}' in result.`, result);
+      }
     } else {
-      // It's a sub-object, recurse.
-      processedResult[item] = processSingleResultResponse(def, result[item]);
+      // If it ends with a question mark, it's optional.
+      let optional = /\?$/.test(def);
+
+      if (optional) {
+        def = def.slice(0, -1); // Remove question mark
+      }
+
+      if (!result.hasOwnProperty(item) || result[item] === null) {
+        // It's missing.
+        if (optional) {
+          // ...and that is OK. Put null and we are done.
+          processedResult[item] = null;
+          continue;
+        } else if (valueObjectDefaults.hasOwnProperty(def)) {
+          // Is there a default? Then copy it into the result and carry on.
+          result[item] = Object.assign({}, valueObjectDefaults[def]);
+        } else {
+          throw new Error(
+            'No value found for required item ' + def + ' from ' + url);
+        }
+      }
+
+      // Do something with the definition
+      if (processingFunctions.hasOwnProperty(def)) {
+        // Name of a function, e.g. to process timestamps.
+        processedResult[item] = processingFunctions[def](result[item]);
+      } else {
+        // It's a sub-object, recurse.
+        processedResult[item] = processSingleResultResponse(def, result[item]);
+      }
     }
   }
 

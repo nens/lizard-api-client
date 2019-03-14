@@ -2,7 +2,7 @@ import { AssetTimeseries, AssetTimeseriesDefinition } from './AssetTimeseries';
 import { Bootstrap, BootstrapDefinition } from './Bootstrap';
 import { LegendData, LegendDataDefinition } from './LegendData';
 import { MeasuringStation, MeasuringStationDefinition } from './MeasuringStation';
-import { ObservationType, ObservationTypeDefinition } from './ObservationType';
+import { ObservationType, ObservationTypeDefinition, DefaultObservationType } from './ObservationType';
 import { Organisation, OrganisationDefinition } from './Organisation';
 import { Parcel, ParcelDefinition } from './Parcel';
 import { RasterAlarm, RasterAlarmDefinition } from './RasterAlarm';
@@ -42,4 +42,8 @@ export const valueObjectDefinitions = {
   Timeseries: TimeseriesDefinition,
   TimeseriesAlarm: TimeseriesAlarmDefinition,
   WmsInfo: WmsInfoDefinition
+};
+
+export const valueObjectDefaults = {
+  ObservationType: DefaultObservationType
 };
