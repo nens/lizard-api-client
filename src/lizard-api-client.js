@@ -9,3 +9,4 @@ export { getRasterAlarms } from './endpoints/rasteralarms';
 export { search, searchParcels } from './endpoints/search';
 export { valueObjects } from './valueobjects';
 export { makeReducer, makeGetter, makeFetcher, makeDeleter, getOrFetch } from './redux';
+export { processSingleResultResponse, processMultipleResultsResponse } from './tools';
