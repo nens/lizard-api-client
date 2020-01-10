@@ -214,12 +214,22 @@ export function makeDeleter(objectName) {
   };
 }
 
+let fetchState = {};
+
 export function getOrFetch(getter, fetcher, id) {
+  if (!fetchState[id])
+    fetchState[id] = { isFetching: null };
+
   // Helper function that combines the parts.
   const { object, shouldFetch } = getter(id);
 
-  if (shouldFetch) {
+  if (shouldFetch && !fetchState[id].isFetching) {
+    fetchState[id].isFetching = true;
     fetcher(id);
+  }
+
+  if (object && fetchState[id].isFetching) {
+    fetchState[id].isFetching = false;
   }
 
   return object;
